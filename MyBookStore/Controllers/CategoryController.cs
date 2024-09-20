@@ -40,7 +40,7 @@ namespace MyBookStore.Controllers
                 try
                 {
                     _context.SaveChanges();
-                    TempData["result"] = $"Categorie {category.Name}is succesfol toegevoegd";
+                    TempData["result"] = $"Categorie {category.Name}is succesvol toegevoegd";
                 }
                 catch (Exception ex)
                 {
@@ -79,7 +79,7 @@ namespace MyBookStore.Controllers
                 try
                 {
                     _context.SaveChanges();
-                    TempData["result"] = $"Categorie {category.Name}is succesfol gewijzigd";
+                    TempData["result"] = $"Categorie {category.Name}is succesvol gewijzigd";
                 }
                 catch (Exception ex)
                 {
@@ -112,7 +112,7 @@ namespace MyBookStore.Controllers
             try
             {
                 _context.SaveChanges();
-                TempData["result"] = $"Categorie {category.Name}is succesfol verwijderd";
+                TempData["result"] = $"Categorie {category.Name}is succesvol verwijderd";
             }
             catch (Exception ex)
             {
