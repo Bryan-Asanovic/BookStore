@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace MyBookStore.Models
+namespace BookStore.Models
 {
     public class Category
     {
