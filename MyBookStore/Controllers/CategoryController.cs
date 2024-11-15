@@ -2,19 +2,22 @@
 using BookStore.DataAccess;
 using BookStore.Models;
 using MyBookStore.Models;
+using BookStore.DataAccess.Repository.IRepository;
 
 namespace MyBookStore.Controllers
 {
     public class CategoryController : Controller
     {
-        private ApplicationDbContext _context { get; set; }
-        public CategoryController(ApplicationDbContext context)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ICategoryRepository _categoryRepository;
+        public CategoryController(IUnitOfWork context)
         {
-            _context = context;
+            _unitOfWork = context;
+            _categoryRepository = _unitOfWork.Category;
         }
         public IActionResult Index()
         {
-            return View(_context.Categories);
+            return View(_categoryRepository.GetAll());
         }
 
         public IActionResult Create()
@@ -31,16 +34,16 @@ namespace MyBookStore.Controllers
             {
                 ModelState.AddModelError("DisplayOrder", "Naam en Volgnummer mogen niet hetzelfde zijn");
             }
-            if (_context.Categories.Any(c => c.Name == category.Name))
+            if (_categoryRepository.GetFirstOrDefault(c => c.Name == category.Name) != null)
             {
                 ModelState.AddModelError("uniquename", "Deze categorie bestaat al");
             }
             if (ModelState.IsValid)
             {
-                _context.Categories.Add(category);
+                _categoryRepository.Add(category);
                 try
                 {
-                    _context.SaveChanges();
+                    _unitOfWork.Save();
                     TempData["result"] = $"Categorie {category.Name}is succesvol toegevoegd";
                 }
                 catch (Exception ex)
@@ -55,11 +58,11 @@ namespace MyBookStore.Controllers
 
         public IActionResult Edit(int? id)
         {
-            if (id == null)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
-            var category = _context.Categories.Find(id);
+            Category category = _categoryRepository.GetFirstOrDefault(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -76,10 +79,10 @@ namespace MyBookStore.Controllers
             }
             if (ModelState.IsValid)
             {
-                _context.Categories.Update(category);
+                _categoryRepository.Update(category);
                 try
                 {
-                    _context.SaveChanges();
+                    _unitOfWork.Save();
                     TempData["result"] = $"Categorie {category.Name}is succesvol gewijzigd";
                 }
                 catch (Exception ex)
@@ -98,7 +101,7 @@ namespace MyBookStore.Controllers
             {
                 return NotFound();
             }
-            Category category = _context.Categories.Find(id);
+            Category category = _categoryRepository.GetFirstOrDefault(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -109,10 +112,10 @@ namespace MyBookStore.Controllers
         [HttpPost]
         public IActionResult ConfirmDelete(Category category)
         {
-            _context.Categories.Remove(category);
+            _categoryRepository.Remove(category);
             try
             {
-                _context.SaveChanges();
+                _unitOfWork.Save();
                 TempData["result"] = $"Categorie {category.Name}is succesvol verwijderd";
             }
             catch (Exception ex)
