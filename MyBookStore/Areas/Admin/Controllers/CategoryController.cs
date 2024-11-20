@@ -4,7 +4,7 @@ using BookStore.Models;
 using MyBookStore.Models;
 using BookStore.DataAccess.Repository.IRepository;
 
-namespace MyBookStore.Controllers
+namespace MyBookStore.Areas.Admin.Controllers
 {
     public class CategoryController : Controller
     {
@@ -44,7 +44,7 @@ namespace MyBookStore.Controllers
                 try
                 {
                     _unitOfWork.Save();
-                    TempData["result"] = $"Categorie {category.Name}is succesvol toegevoegd";
+                    TempData["result"] = $"Categorie {category.Name} is succesvol toegevoegd";
                 }
                 catch (Exception ex)
                 {
@@ -83,7 +83,7 @@ namespace MyBookStore.Controllers
                 try
                 {
                     _unitOfWork.Save();
-                    TempData["result"] = $"Categorie {category.Name}is succesvol gewijzigd";
+                    TempData["result"] = $"Categorie {category.Name} is succesvol gewijzigd";
                 }
                 catch (Exception ex)
                 {
@@ -116,7 +116,7 @@ namespace MyBookStore.Controllers
             try
             {
                 _unitOfWork.Save();
-                TempData["result"] = $"Categorie {category.Name}is succesvol verwijderd";
+                TempData["result"] = $"Categorie {category.Name} is succesvol verwijderd";
             }
             catch (Exception ex)
             {
