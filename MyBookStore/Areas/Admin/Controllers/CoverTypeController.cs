@@ -1,19 +1,28 @@
-﻿using BookStore.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using BookStore.DataAccess.Repository.IRepository;
+using BookStore.Models;
 
-namespace MyBookStore.Areas.Admin.Controllers
+namespace BookStoreWeb.Areas.Admin.Controllers
 {
+
     public class CoverTypeController : Controller
     {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ICoverTypeRepository _covertypeRepository;
+
+        public CoverTypeController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
         public IActionResult Index()
         {
-            // Hier komt de lijstweergave
-            return View();
+            var coverTypes = _unitOfWork.CoverType.GetAll();
+            return View(coverTypes);
         }
 
         public IActionResult Create()
         {
-            // View voor het maken van een nieuwe CoverType
             return View();
         }
 
@@ -23,7 +32,17 @@ namespace MyBookStore.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Data opslaan in database
+                _unitOfWork.CoverType.Add(coverType);
+                try
+                {
+                    _unitOfWork.Save();
+                    TempData["result"] = $"Categorie {coverType.Name} succesvol toegevoegd.";
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Error = "Er is een probleem met de database";
+                    return View(coverType);
+                }
                 return RedirectToAction("Index");
             }
             return View(coverType);
@@ -31,8 +50,12 @@ namespace MyBookStore.Areas.Admin.Controllers
 
         public IActionResult Edit(int id)
         {
-            // Data ophalen en tonen in edit view
-            return View();
+            var coverType = _unitOfWork.CoverType.GetFirstOrDefault(c => c.Id == id);
+            if (coverType == null)
+            {
+                return NotFound();
+            }
+            return View(coverType);
         }
 
         [HttpPost]
@@ -41,7 +64,18 @@ namespace MyBookStore.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Data updaten
+                _unitOfWork.CoverType.Update(coverType);
+                try
+                {
+                    _unitOfWork.Save();
+                    TempData["result"] = $"Categorie {coverType.Name} succesvol gewijzigd.";
+
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Error = "Er is een probleem met de database!";
+                    return View(coverType);
+                }
                 return RedirectToAction("Index");
             }
             return View(coverType);
@@ -49,15 +83,34 @@ namespace MyBookStore.Areas.Admin.Controllers
 
         public IActionResult Delete(int id)
         {
-            // Data ophalen voor bevestiging
-            return View();
+            var coverType = _unitOfWork.CoverType.GetFirstOrDefault(c => c.Id == id);
+            if (coverType == null)
+            {
+                return NotFound();
+            }
+            return View(coverType);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public IActionResult ConfirmDelete(int id)
         {
-            // Data verwijderen
+            var coverType = _unitOfWork.CoverType.GetFirstOrDefault(c => c.Id == id);
+            if (coverType != null)
+            {
+                _unitOfWork.CoverType.Remove(coverType);
+                try
+                {
+                    _unitOfWork.Save();
+                    TempData["result"] = $"Categorie {coverType.Name} succesvol verwijderd.";
+
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Error = "Er is een probleem met de database!";
+                    return View(coverType);
+                }
+            }
             return RedirectToAction("Index");
         }
     }

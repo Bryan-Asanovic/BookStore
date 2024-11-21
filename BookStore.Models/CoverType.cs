@@ -13,7 +13,7 @@ namespace BookStore.Models
         public int Id { get; set; }
         [Required(ErrorMessage = "{0} is een verplicht veld")]
         [MaxLength(50, ErrorMessage = "{0} mag maximaal {1} teken bevatten")]
-        [Display(Name = "Naam")]
+        [Display(Name = "Soort Kaft")]
         public string? Name { get; set; }
     }
 }

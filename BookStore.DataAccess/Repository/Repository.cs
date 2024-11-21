@@ -1,11 +1,11 @@
-﻿using System;
+﻿using BookStore.DataAccess.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using BookStore.DataAccess.Repository.IRepository;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.DataAccess.Repository
 {
@@ -13,6 +13,7 @@ namespace BookStore.DataAccess.Repository
     {
         private readonly ApplicationDbContext _context;
         internal DbSet<T> dbSet;
+
         public Repository(ApplicationDbContext context)
         {
             _context = context;
@@ -29,7 +30,7 @@ namespace BookStore.DataAccess.Repository
             return query.ToList();
         }
 
-        public T GetFirstOrDefault(Expression<Func<T, bool>> filter)
+        public T GetFirsttorDefeault(Expression<Func<T, bool>> filter)
         {
             IQueryable<T> query = dbSet.AsQueryable();
             query = query.Where(filter);

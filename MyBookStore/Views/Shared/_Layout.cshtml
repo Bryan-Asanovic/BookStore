@@ -25,11 +25,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="Admin" asp-controller="Category" asp-action="Index">Categorieën</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="Admin" asp-controller="CoverType" asp-action="Index">Kaftsoorten</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" href="#" data-bs-toggle="dropdown"
+                               role="button" aria-haspopup="true" aria-expanded="false">Beheer</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Categorieën</a>
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="CoverType" asp-action="Index">Kaftsoorten</a>
+                            </div>
                         </li>
                     </ul>
                 </div>

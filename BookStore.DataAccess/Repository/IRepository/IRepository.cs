@@ -11,8 +11,11 @@ namespace BookStore.DataAccess.Repository.IRepository
     {
         IEnumerable<T> GetAll();
         void Add(T entity);
-        T GetFirstOrDefault(Expression<Func<T, bool>> filter);
+        T GetFirsttorDefeault(Expression<Func<T, bool>> filter);
+
         void Remove(T entity);
-        void RemoveRange(IEnumerable<T> entities);
+
+        void RemoveRange(IEnumerable<T> entity);    
+
     }
 }

@@ -1,5 +1,4 @@
-﻿using BookStore.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +9,7 @@ namespace BookStore.DataAccess.Repository.IRepository
     public interface IUnitOfWork
     {
         ICategoryRepository Category { get; }
-
+        ICoverTypeRepository CoverType { get; }
         void Save();
     }
 }
