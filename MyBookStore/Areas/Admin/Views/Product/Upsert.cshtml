@@ -1,0 +1,121 @@
+﻿@model MyBookStore.ViewModels.ProductVM
+
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Product.Id" />
+    <div class="border p-3 mt-4 row">
+        <div class="row pb-2">
+            <h2 class="text-primary">@(Model.Product.Id != 0 ? "Wijzig product" : "Product toevoegen")</h2>
+            <hr />
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="mb-3">
+                    <label asp-for="Product.Title"></label>
+                    <input asp-for="Product.Title" class="form-control" />
+                    <span asp-validation-for="Product.Title" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Product.Description"></label>
+                    <textarea asp-for="Product.Description" class="form-control" id="tiny"></textarea>
+                    <span asp-validation-for="Product.Description" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Product.ISBN"></label>
+                    <input asp-for="Product.ISBN" class="form-control" />
+                    <span asp-validation-for="Product.ISBN" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Product.Author"></label>
+                    <input asp-for="Product.Author" class="form-control" />
+                    <span asp-validation-for="Product.Author" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Product.ListPrice"></label>
+                    <input asp-for="Product.ListPrice" class="form-control" />
+                    <span asp-validation-for="Product.ListPrice" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Product.Price"></label>
+                    <input asp-for="Product.Price" class="form-control" />
+                    <span asp-validation-for="Product.Price" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Product.Price50"></label>
+                    <input asp-for="Product.Price50" class="form-control" />
+                    <span asp-validation-for="Product.Price50" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Product.Price100"></label>
+                    <input asp-for="Product.Price100" class="form-control" />
+                    <span asp-validation-for="Product.Price100" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Product.CategoryId"></label>
+                    <select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-select">
+                        <option disabled selected>-- Kies categorie --</option>
+                    </select>
+                    <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Product.CoverTypeId"></label>
+                    <select asp-for="Product.CoverTypeId" asp-items="@Model.CoverTypeList" class="form-select">
+                        <option disabled selected>-- Kies kaft --</option>
+                    </select>
+                    <span asp-validation-for="Product.CoverTypeId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-4 text-center">
+                @if (Model.Product.ImageUrl != null)
+                {
+                    <div class="mb-3">
+                        <img src="@Model.Product.ImageUrl" class="img-fluid rounded shadow" alt="Product Image" />
+                    </div>
+                }
+                <div class="mb-3">
+                    <label asp-for="Product.ImageUrl"></label>
+                    <input type="file" class="form-control" name="file" id="fileUpload" />
+                    <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 mt-3">
+            @if (Model.Product.Id == 0)
+            {
+                <button onclick="return ValidateInput()" type="submit" class="btn btn-primary" style="width:250px">Toevoegen</button>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-primary" style="width:250px">Wijzigen</button>
+            }
+            <a asp-controller="Product" asp-action="Index" class="btn btn-secondary" style="width:250px">
+                Terug naar overzicht
+            </a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        function ValidateInput() {
+            if (document.getElementById("fileUpload").value === "") {
+                swal.fire({
+                    icon: 'error',
+                    title: 'Foutje ...',
+                    text: 'Je moet een afbeelding selecteren bij een nieuw product',
+                });
+                return false;
+            }
+            return true;
+        }
+    </script>
+    <script>
+        tinymce.init({
+        selector: 'textarea#tiny',
+        language: 'nl'
+        });
+    </script>
+}

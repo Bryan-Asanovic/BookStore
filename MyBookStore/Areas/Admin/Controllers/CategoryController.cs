@@ -35,7 +35,7 @@ namespace BookStoreWeb.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("name", "Naam en Volgnummer mogen niet hetzelfde zijn");
             }
-            if (_categoryRepository.GetFirsttorDefeault(c => c.Name == category.Name) != null)
+            if (_categoryRepository.GetFirstOrDefault(c => c.Name == category.Name) != null)
             {
                 ModelState.AddModelError("uniquename", "Deze categorie bestaat al");
             }
@@ -62,7 +62,7 @@ namespace BookStoreWeb.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Category category = _categoryRepository.GetFirsttorDefeault(c => c.Id == id);
+            Category category = _categoryRepository.GetFirstOrDefault(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -103,7 +103,7 @@ namespace BookStoreWeb.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Category category = _categoryRepository.GetFirsttorDefeault(c => c.Id == id);
+            Category category = _categoryRepository.GetFirstOrDefault(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
